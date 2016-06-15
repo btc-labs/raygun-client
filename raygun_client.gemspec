@@ -22,6 +22,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'http-commands'
   s.add_runtime_dependency 'telemetry'
   s.add_runtime_dependency 'settings'
-
-  s.add_development_dependency 'test_bench'
 end
