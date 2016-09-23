@@ -21,7 +21,7 @@ module RaygunClient
       end
 
       def self.time
-        ::Controls::Time.reference
+        Time.example
       end
 
       def self.machine_name

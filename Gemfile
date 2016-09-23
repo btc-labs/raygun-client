@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 gem 'raygun_client', path: '.'
 
 source 'https://gem.fury.io/eventide' do
+  gem 'clock'
   gem 'connection-client'
-  gem 'controls'
   gem 'http-commands'
   gem 'schema'
   gem 'serialize'
