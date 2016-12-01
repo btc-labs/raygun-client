@@ -1,8 +1,8 @@
-require_relative '../bench_init'
+require_relative '../automated_init'
 
 context "Post Error Data to the Raygun API" do
   test "Results in HTTP Status of 202 Accepted" do
-    data = RaygunClient::Controls::Data.example
+    data = Controls::Data.example
     response = RaygunClient::HTTP::Post.(data)
 
     assert(response.status_code == 202)

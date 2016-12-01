@@ -1,8 +1,8 @@
-require_relative './bench_init'
+require_relative './automated_init'
 
 context "Post Substitute and Telemetry" do
   context "Records Posts" do
-    post_data = RaygunClient::Controls::Data.example
+    post_data = Controls::Data.example
     substitute_post = RaygunClient::HTTP::Post::Substitute.build
 
     substitute_post.http_post.status_code = 'some-status-code'
