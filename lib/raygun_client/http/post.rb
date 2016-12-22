@@ -33,7 +33,7 @@ module RaygunClient
 
       def call(data)
         logger.trace "Posting to Raygun"
-        json_text = Serialize::Write.(data, :json)
+        json_text = Transform::Write.(data, :json)
 
         response = post(json_text)
 

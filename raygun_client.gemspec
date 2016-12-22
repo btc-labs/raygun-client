@@ -15,11 +15,9 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.2.3'
 
-  s.add_runtime_dependency 'clock'
+  s.add_runtime_dependency 'evt-settings'
+
   s.add_runtime_dependency 'error_data'
-  s.add_runtime_dependency 'serialize'
   s.add_runtime_dependency 'connection-client'
   s.add_runtime_dependency 'http-commands'
-  s.add_runtime_dependency 'telemetry'
-  s.add_runtime_dependency 'settings'
 end

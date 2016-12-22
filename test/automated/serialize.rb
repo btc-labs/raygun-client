@@ -6,7 +6,7 @@ context "Data Serialization" do
 
     data = Controls::Data.example
 
-    json_text = Serialize::Write.(data, :json)
+    json_text = Transform::Write.(data, :json)
 
     assert(json_text == control_json_text)
   end
