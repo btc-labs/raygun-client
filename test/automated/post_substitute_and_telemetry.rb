@@ -5,8 +5,7 @@ context "Post Substitute and Telemetry" do
     post_data = Controls::Data.example
     substitute_post = RaygunClient::HTTP::Post::Substitute.build
 
-    substitute_post.http_post.status_code = 'some-status-code'
-    substitute_post.http_post.reason_phrase = 'some-reason-phrase'
+    substitute_post.set_response 500, reason_phrase: 'Some message'
 
     sink = substitute_post.sink
 
@@ -27,7 +26,7 @@ context "Post Substitute and Telemetry" do
 
       test "data and response block arguments" do
         assert sink do
-          posted? { |data, response| data == post_data && response.status_code == 'some-status-code' }
+          posted? { |data, response| data == post_data && response.code == '500' && response.message == 'Some message' }
         end
       end
     end
@@ -47,7 +46,7 @@ context "Post Substitute and Telemetry" do
 
       test "data and response block argument" do
         assert sink do
-          sink.posts { |data, response| data == post_data && response.status_code == 'some-status-code' }.length == 1
+          sink.posts { |data, response| data == post_data && response.code == '500' && response.message == 'Some message' }.length == 1
         end
       end
     end

@@ -1,9 +1,6 @@
 require 'json'
+require 'net/http'
 
-require 'connection'
-require 'http/commands'
-require 'log'
-require 'telemetry'
 require 'transform'
 require 'settings'; Settings.activate
 

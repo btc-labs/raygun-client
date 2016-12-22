@@ -8,14 +8,12 @@ module RaygunClient
       attr_reader :data
 
       dependency :telemetry, ::Telemetry
-      dependency :http_post, ::HTTP::Commands::Post
 
-      def self.build(connection: nil)
+      def self.build
         new.tap do |instance|
           RaygunClient::Settings.set(instance)
 
           ::Telemetry.configure instance
-          ::HTTP::Commands::Post.configure instance, :http_post, connection: connection
         end
       end
 
@@ -35,9 +33,9 @@ module RaygunClient
         logger.trace "Posting to Raygun"
         json_text = Transform::Write.(data, :json)
 
-        response = post(json_text)
+        response = post json_text
 
-        telemetry.record :posted, Telemetry::Data.new(data, response)
+        record_posted data, response
 
         logger.info "Posted to Raygun (#{LogText::Posted.(data, response)})"
 
@@ -56,8 +54,20 @@ module RaygunClient
         @uri ||= URI::HTTPS.build :host => host, :path => path
       end
 
+      def record_posted(data, response)
+        telemetry_data = Telemetry::Data.new data, response
+
+        telemetry.record :posted, telemetry_data
+
+        telemetry_data
+      end
+
       def post(request_body)
-        http_post.(request_body, self.class.uri, 'X-ApiKey' => api_key)
+        uri = self.class.uri
+
+        Net::HTTP.start uri.host, uri.port, :use_ssl => uri.scheme == 'https' do |http|
+          http.request_post uri.path, request_body, 'X-ApiKey' => api_key
+        end
       end
 
       def self.register_telemetry_sink(post)
@@ -114,8 +124,24 @@ module RaygunClient
           end
         end
 
-        class Post < HTTP::Post
+        class Post < Post
+          attr_accessor :status_code
+          attr_accessor :reason_phrase
           attr_accessor :sink
+
+          def call(post_data)
+            response = OpenStruct.new(
+              :code => status_code,
+              :message => reason_phrase
+            )
+
+            record_posted post_data, response
+          end
+
+          def set_response(status_code, reason_phrase: nil)
+            self.reason_phrase = reason_phrase if reason_phrase
+            self.status_code = status_code.to_s
+          end
 
           def self.build
             new.tap do |instance|
@@ -128,7 +154,7 @@ module RaygunClient
       module LogText
         module Posted
           def self.call(data, response)
-            "Status Code: #{response.status_code}, Reason Phrase: #{response.reason_phrase}, Error Message: #{data.error.message}, Custom Data: #{data.custom_data || '(none)'})"
+            "StatusCode: #{response.code}, ReasonPhrase: #{response.message}, ErrorMessage: #{data.error.message}, CustomData: #{data.custom_data || '(none)'})"
           end
         end
       end
