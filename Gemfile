@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'evt-settings'
-gem 'evt-transform'
+gemspec
 
 source 'https://gem.fury.io/obsidian' do
   gem 'error_data'
