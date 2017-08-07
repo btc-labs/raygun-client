@@ -3,6 +3,8 @@ module RaygunClient
     class Post
       include Log::Dependency
 
+      configure :raygun_post
+
       setting :api_key
 
       attr_reader :data
@@ -14,13 +16,6 @@ module RaygunClient
           RaygunClient::Settings.set(instance)
 
           ::Telemetry.configure instance
-        end
-      end
-
-      def self.configure(receiver, attr_name=nil)
-        attr_name ||= :raygun_post
-        build.tap do |instance|
-          receiver.send "#{attr_name}=", instance
         end
       end
 
