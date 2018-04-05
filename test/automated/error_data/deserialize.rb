@@ -6,7 +6,7 @@ context "Error Data Deserialization" do
 
     json_text = ErrorData::Controls::ErrorData::JSON.text
 
-    error_data = Transform::Read.(json_text, compare_error_data.class, :json)
+    error_data = Transform::Read.(json_text, :json, compare_error_data.class)
 
     assert(error_data == compare_error_data)
   end
