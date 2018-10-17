@@ -1,7 +1,7 @@
 /.bundle
 /Gemfile.lock
 /*.gem
-/installed-packages
+/gems
 /settings
 /tmp
 .DS_store
