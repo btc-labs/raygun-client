@@ -5,6 +5,8 @@ context "Post Error Data to the Raygun API" do
     data = Controls::Data.example
     response = RaygunClient::HTTP::Post.(data)
 
+    comment "Response code: #{response.code}"
+
     assert(response.code == '202')
   end
 end

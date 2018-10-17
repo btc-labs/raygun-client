@@ -1,5 +1,8 @@
 module RaygunClient
   class Publish
+    include Dependency
+    include Initializer
+
     initializer :error, :tags
 
     attr_writer :custom_data

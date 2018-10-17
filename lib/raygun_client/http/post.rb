@@ -1,6 +1,9 @@
 module RaygunClient
   module HTTP
     class Post
+      include Configure
+      include Dependency
+      include Settings::Setting
       include Log::Dependency
 
       configure :raygun_post

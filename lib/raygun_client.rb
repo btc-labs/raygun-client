@@ -3,9 +3,9 @@ require 'net/http'
 
 require 'schema'
 
-require 'configure'; Configure.activate
+require 'configure'
 require 'transform'
-require 'settings'; Settings.activate
+require 'settings'
 
 require 'raygun_client/log'
 
